@@ -463,7 +463,41 @@ public class BibEntry implements Cloneable {
 
         changed = true;
 
+        // Verifica se houve tentativa de insercao de ano
+        if (fieldName == "year") {
+            // Valor numerico do ano de entrada e valor do ano atual
+            int yearNum;
+            int yearCur;
+
+            // Verifica se ano e um valor numerico
+            try {
+                yearNum = Integer.parseInt(value);
+            }
+            catch (NumberFormatException nfe) {
+                // Escreve valor vazio e indica ocorrencia de erro
+                fields.put(fieldName, "");
+                throw new IllegalArgumentException("Valor nao numerico de ano");
+            }
+
+            // Verifica se ano possui valor nao negativo
+            if (yearNum < 0) {
+                // Escreve valor vazio e indica ocorrencia de erro
+                fields.put(fieldName, "");
+                throw new IllegalArgumentException("Valor negativo de ano");
+            }
+
+            //Verifica se valor de ano e maior do que o ano atual
+            yearCur = Calendar.getInstance().get(Calendar.YEAR);
+            if (yearNum > yearCur) {
+                // Escreve valor vazio e indica ocorrencia de erro
+                fields.put(fieldName, "");
+                throw new IllegalArgumentException("Valor de ano maior do que o corrente (" + yearCur + ")");
+            }
+
+        }
+
         fields.put(fieldName, value.intern());
+
         invalidateFieldCache(fieldName);
 
         FieldChange change = new FieldChange(this, fieldName, oldValue, value);
