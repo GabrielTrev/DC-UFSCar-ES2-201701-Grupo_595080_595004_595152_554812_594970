@@ -5,19 +5,7 @@ import java.text.FieldPosition;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
@@ -195,7 +183,16 @@ public class BibEntry implements Cloneable {
      * @param newCiteKey The cite key to set. Must not be null; use {@link #clearCiteKey()} to remove the cite key.
      */
     public void setCiteKey(String newCiteKey) {
-        setField(KEY_FIELD, newCiteKey);
+        if(newCiteKey.length()>1) {
+            if (newCiteKey == "") {
+                setField(KEY_FIELD, newCiteKey);
+            } else {
+                char b = newCiteKey.charAt(0);
+                if (!Character.isDigit(b)) {
+                    setField(KEY_FIELD, newCiteKey);
+                }
+            }
+        }
     }
 
     /**
@@ -485,7 +482,20 @@ public class BibEntry implements Cloneable {
      * @param value The value to set.
      */
     public Optional<FieldChange> setField(String name, String value) {
-        return setField(name, value, EntryEventSource.LOCAL);
+        if(name == "author")
+        {
+            int a = value.length();
+            int i;
+            for(i=0;i<a;i++)
+            {
+                char b = value.charAt(i);
+                if (Character.isDigit(b))
+                    return null;
+            }
+            return setField(name, value, EntryEventSource.LOCAL);
+        }
+        else
+            return setField(name, value, EntryEventSource.LOCAL);
     }
 
     /**
@@ -841,6 +851,7 @@ public class BibEntry implements Cloneable {
         }
 
         return this.setField(FieldName.FILE, newValue);
+        //Chave com numero iniciando a string
     }
 
 }

@@ -401,4 +401,33 @@ public class BibEntryTests {
         be.clearField("author");
         assertEquals(Optional.empty(), be.getField("author"));
     }
+    @Test
+    public void testNumberFirstKey() {
+        BibEntry e = new BibEntry(BibtexEntryTypes.ARTICLE.getName());
+
+        e.setCiteKey("7s");
+        Assert.assertFalse(e.hasCiteKey());
+    }
+
+    public void testLenghtKey_Minimum2c() {
+        BibEntry e = new BibEntry(BibtexEntryTypes.ARTICLE.getName());
+
+        e.setCiteKey("S");
+        Assert.assertFalse(e.hasCiteKey());
+    }
+
+
+    @Test
+    public void authorNotNumber() {
+        BibEntry e = new BibEntry(BibtexEntryTypes.ARTICLE.getName());
+        e.setField("author", "123abc");
+        e.setField("title", "abc");
+        e.setField("journal", "abc");
+        List<String> requiredFields = new ArrayList<>();
+
+
+        Assert.assertFalse(e.setField("author", "CEPODE13MADEIRA")!= null);
+
+
+    }
 }

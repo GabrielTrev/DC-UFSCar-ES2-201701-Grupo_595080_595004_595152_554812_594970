@@ -284,4 +284,5 @@ public class BibtexEntryTypes {
     public static Optional<EntryType> getType(String name) {
         return ALL.stream().filter(e -> e.getName().equalsIgnoreCase(name)).findFirst();
     }
+
 }
