@@ -264,6 +264,19 @@ task copyTestResources(type: Copy) {
 }
 processTestResources.dependsOn copyTestResources
 
+jacoco {
+    toolVersion = "0.7.6.201602180812"
+    reportsDir = file("$buildDir/reports/jacoco")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/jacocoHtml"
+    }
+}
+
 tasks.withType(Test) {
     reports.html.destination = file("${reporting.baseDir}/${name}")
     jacoco {
@@ -276,6 +289,15 @@ jacocoTestReport {
         xml.enabled = true // coveralls plugin depends on xml format report
         html.enabled = true
     }
+}
+
+jacoco {
+    applyTo run
+}
+
+task applicationCodeCoverageReport(type:JacocoReport){
+    executionData run
+    sourceSets sourceSets.main
 }
 
 shadowJar {
