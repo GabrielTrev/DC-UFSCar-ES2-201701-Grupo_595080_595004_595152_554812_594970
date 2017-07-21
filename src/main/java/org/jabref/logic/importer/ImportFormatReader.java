@@ -68,6 +68,7 @@ public class ImportFormatReader {
         formats.add(new RepecNepImporter(importFormatPreferences));
         formats.add(new RisImporter());
         formats.add(new SilverPlatterImporter());
+	formats.add(new XSLImporter());
 
         // Get custom import formats
         for (CustomImporter importer : importFormatPreferences.getCustomImportList()) {
