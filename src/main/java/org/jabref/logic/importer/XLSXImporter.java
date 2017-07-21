@@ -1,15 +1,15 @@
-// Baseado nos arquivos importer e importer de PDF
+// Baseado nos arquivos importer e importer de PDF além de tutoriais encontrados na internet para o uso de apache.poi
 package org.jabref.logic.importer;
 
 import org.jabref.logic.util.FileExtensions;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.entry.BibtexEntryTypes;
 
-//baseado em tutorial de como criar arquivo xls em Java
-import  org.apache.poi.hssf.usermodel.HSSFSheet;
-import  org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import  org.apache.poi.hssf.usermodel.HSSFRow;
-import  org.apache.poi.hssf.usermodel.HSSFCell;
+//baseado em tutorial de como criar arquivo xlsx em Java
+import  org.apache.poi.xssf.usermodel.XSSFSheet;
+import  org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import  org.apache.poi.xssf.usermodel.XSSFRow;
+import  org.apache.poi.xssf.usermodel.XSSFCell;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,21 +29,21 @@ import java.util.ArrayList;
 // Created by Joao Victor
 //
 
-public class XLSImporter extends Importer{
+public class XLSXImporter extends Importer{
 
     @Override
     public String getName(){
-        return "XLS Importer";
+        return "xlsx Importer";
     }
 
     @Override
     public FileExtensions getExtension(){
-        return FileExtension.XLS;
+        return FileExtension.xlsx;
     }
 
     @Override
     public String getDescription (){
-        return "Criacao de Arquivo XLS";
+        return "Criacao de Arquivo xlsx";
     }
     @Override
     public boolean isRecognizedFormat(BufferedReader reader){
@@ -55,7 +55,7 @@ public class XLSImporter extends Importer{
         return null;
     }
 
-    Override
+    @Override
     public ParserResult importDatabase(Path filePath, Charset encoding) throws IOException{
         List<BibEntry> bibitems = new ArrayList<>();
         fileInputStream inputStream = new fileInputStream(new File(filePath.toString()));
@@ -66,7 +66,7 @@ public class XLSImporter extends Importer{
 
         //Seta o numero da celula no momento
         int rowNum = sheet.getLastRowNum()+1;
-
+	//Looop que adiciona novas celulas e coloca valor de ano, autor ou titulo na mesma
         for (int i=0; i<rowNum; i++){
             XSSFRow row = sheet.getRow(i);
             BibEntry bibentry = new BibEntry();

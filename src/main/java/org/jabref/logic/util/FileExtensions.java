@@ -43,7 +43,7 @@ public enum FileExtensions {
     JAR(Localization.lang("%0 file", "JAR"), "jar"),
     XML(Localization.lang("%0 file", "XML"), "xml"),
     ZIP(Localization.lang("%0 file", "ZIP"), "zip");
-    XLS(Localization.lang("%0 file", "XLS"), "xls");
+    XLSX(Localization.lang("%0 file", "XLSX"), "xlsx");
 
     private final String[] extension;
     private final String description;
