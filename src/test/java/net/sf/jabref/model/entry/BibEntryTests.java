@@ -101,6 +101,13 @@ public class BibEntryTests {
     }
 
     @Test
+    public void valorInvalidoParaChave() {
+        BibEntry e = new BibEntry(BibtexEntryTypes.ARTICLE.getName());
+        e.setCiteKey("A b c d e");
+        Assert.assertEquals(Optional.of("A b c d e"), e.getField(BibEntry.KEY_FIELD));
+    }
+
+    @Test
     public void typeOfBibEntryIsMiscAfterSettingToNullString() {
         assertEquals("article", keywordEntry.getType());
         keywordEntry.setType((String) null);
@@ -141,6 +148,80 @@ public class BibEntryTests {
         emptyEntry.setField("year", "2003");
         assertEquals(Optional.of("2003"), emptyEntry.getFieldOrAlias("date"));
     }
+
+    // ==========================================================================================================
+
+    @Test
+    public void getFieldOrAliasYearWithDateNegative() {
+        emptyEntry.setField("date", "-45");
+        assertEquals(Optional.of("-45"), emptyEntry.getFieldOrAlias("year"));
+    }
+
+    @Test
+    public void getFieldOrAliasPagesWithNonNumericValue() {
+        emptyEntry.setField("pages", "y");
+        assertEquals(Optional.of("y"), emptyEntry.getFieldOrAlias("pages"));
+    }
+
+    @Test
+    public void setFieldYearNumber() {
+        BibEntry e = new BibEntry(BibtexEntryTypes.ARTICLE.getName());
+        e.setField("year", "2017");
+        assertEquals(Optional.of("2017"), e.getFieldOrAlias("year"));
+    }
+
+    @Test
+    public void setFieldYearNonNumeric() {
+        BibEntry e = new BibEntry(BibtexEntryTypes.ARTICLE.getName());
+        Boolean erro;
+
+        erro = false;
+        try {
+            e.setField("year", "abc");
+        }
+        catch (IllegalArgumentException iae)
+        {
+            erro = true;
+        }
+
+        Assert.assertTrue(erro);
+    }
+
+    @Test
+    public void setFieldYearNegative() {
+        BibEntry e = new BibEntry(BibtexEntryTypes.ARTICLE.getName());
+        Boolean erro;
+
+        erro = false;
+        try {
+            e.setField("year", "-45");
+        }
+        catch (IllegalArgumentException iae)
+        {
+            erro = true;
+        }
+
+        Assert.assertTrue(erro);
+    }
+
+    @Test
+    public void setFieldYearFuture() {
+        BibEntry e = new BibEntry(BibtexEntryTypes.ARTICLE.getName());
+        Boolean erro;
+
+        erro = false;
+        try {
+            e.setField("year", "2117");
+        }
+        catch (IllegalArgumentException iae)
+        {
+            erro = true;
+        }
+
+        Assert.assertTrue(erro);
+    }
+
+    // ==========================================================================================================
 
     @Test
     public void getFieldOrAliasYearWithDateYYYY() {
